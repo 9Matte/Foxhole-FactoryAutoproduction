@@ -2,11 +2,11 @@ package Commands;
 
 public class KeyCommand extends Command {
     private boolean shiftEnable = false;
-    private int keyCode;
+    private String keyText;
 
-    public KeyCommand(boolean shiftEnable, int keyCode) {
+    public KeyCommand(boolean shiftEnable, String keyText) {
         this.shiftEnable = shiftEnable;
-        this.keyCode = keyCode;
+        this.keyText = keyText;
     }
 
     //SETTERS
@@ -18,14 +18,17 @@ public class KeyCommand extends Command {
     }
 
     //GETTERS
-    public int getKeyCode() {
-        return keyCode;
+    public String getKeyText() {
+        return keyText;
     }
-    public void setKeyCode(int keyCode) {
-        this.keyCode = keyCode;
+    public char getKeyTest_char() {
+        return keyText.charAt(0);
+    }
+    public void setKeyCode(String keyText) {
+        this.keyText = keyText;
     }
 
     public String print() {
-        return "Shift: " + shiftEnable + " - " + keyCode;
+        return "Shift: " + shiftEnable + " - " + keyText + " - " + keyText.charAt(0);
     }
 }
