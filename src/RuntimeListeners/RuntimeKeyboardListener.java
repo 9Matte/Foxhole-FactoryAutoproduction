@@ -13,22 +13,18 @@ public class RuntimeKeyboardListener implements NativeKeyListener {
         //if shift is pressed, just register it and don't add any command.
         String keyStroke = NativeKeyEvent.getKeyText(e.getKeyCode());
 
-        //System.out.println(keyStroke + " " + keyStroke.charAt(0));
-        switch (keyStroke) {
-            case "Maiusc":
+        //System.out.println(keyStroke + " -> " + e.getKeyCode());
+        switch (e.getKeyCode()) {
+            case 42 -> // SHIFT
                 //If Shift is pressed, only consider as a flag
                 shiftPressed = true;
-                break;
-            case "X":
+            case 45 -> // X
                 criticalClick = true;
-                break;
-            case "Backspace":
+            case 14 -> // Backspace
                 System.exit(0);
-                break;
-            case "Alt":
+            case 56 -> // Alt
                 main.configurationIsDone = true;
-                break;
-            default:
+            default ->
                 //register every single other key
                 main.commandListTemp.add(new KeyCommand(shiftPressed, keyStroke));
         }
@@ -36,6 +32,6 @@ public class RuntimeKeyboardListener implements NativeKeyListener {
 
     public void nativeKeyReleased(NativeKeyEvent e) {
         //Only check if shift has been released and remove it.
-        if(NativeKeyEvent.getKeyText(e.getKeyCode()).equals("Maiusc")) shiftPressed = false;
+        if(e.getKeyCode() == 42) shiftPressed = false;
     }
 }

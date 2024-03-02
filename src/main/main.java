@@ -2,6 +2,7 @@ package main;
 
 import Commands.Command;
 import Commands.KeyCommand;
+import Commands.KeyConverter;
 import Commands.MouseCommand;
 import RuntimeListeners.RuntimeStarter;
 
@@ -70,8 +71,6 @@ public class main {
 
 
         System.out.println("\n\n\nAll configurations has been completed.");
-        //BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-
 
         while(true) {
             //Main loop of execution. Inside this loop, all the commands are executed one after the other.
@@ -86,6 +85,16 @@ public class main {
         }
     }
 
+
+    /*
+    * TODO
+    *  LO SCRIPT FUNZIONA. APRE LA GUI, AGGIUNGE E SEGUE TUTTE LE PROCEDURE IN MODO ADEGUATO.
+    *  IL PROBLEMA SORGE NEL MOMENTO IN CUI 1 FACTORY HA CODA E L'ALTRA NO.
+    *  QUESTO FARà SI CHE NELLA PROCEDURA DI UNLOADING, CAVA DA 1 FACTORY E DALL'ALTRA POI FA IL LOADING, ANDANDO A SMINCHIARE TUTTO.
+    *
+    *  SOLUZIONE: EFFETTUARE SOLO IL CICLO DI LOADING, DOVE QUELLO CONTROLLA ED EFFETTUA SIA LOADING CHE UNLOADING
+    * */
+
     /***
      * Method used to execute a list of commands
      * @param commandList List of commands to be executed
@@ -98,18 +107,20 @@ public class main {
         for (Command c: commandList) {
             //Verify if the command is a key command
             if(c instanceof KeyCommand) {
-                System.out.println(c.print());
+                int codeExecute = KeyConverter.convertToCode(((KeyCommand) c).getKeyText());
                 //If the command is a key, it's important to check for the shift before.
                 if(((KeyCommand) c).isShiftEnable()) {
                     //In this case, shift is enable.
                     robot.keyPress(KeyEvent.VK_SHIFT);
-                    robot.keyPress(((KeyCommand) c).getKeyTest_char());
+                    Thread.sleep(200);
+                    robot.keyPress(codeExecute);
+                    Thread.sleep(200);
                     robot.keyRelease(KeyEvent.VK_SHIFT);
                 }
                 else //Shift is not pressed, so execute the command
-                    robot.keyPress(((KeyCommand) c).getKeyTest_char());
+                    robot.keyPress(codeExecute);
 
-                robot.keyRelease(20);
+                robot.keyRelease(codeExecute);
             }
             //Verify if the command is a mouse command
             else if(c instanceof MouseCommand) {
